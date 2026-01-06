@@ -1,5 +1,10 @@
 # 📍 位置追踪系统 - 家庭精简版
 
+[![GitHub](https://img.shields.io/badge/GitHub-zhuyongdong1/location--tracker-blue?logo=github)](https://github.com/zhuyongdong1/location-tracker)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-16+-339933?logo=node.js)](https://nodejs.org/)
+[![Android](https://img.shields.io/badge/Android-5.0+-3DDC84?logo=android)](https://developer.android.com/)
+
 一个极简的家庭用位置追踪解决方案：30分钟自动上报位置，网页查看记录。
 
 ## 🎯 项目目标
