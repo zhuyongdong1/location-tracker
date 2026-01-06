@@ -1,0 +1,125 @@
+# 📦 位置追踪系统部署包说明
+
+## 🎯 你需要上传的文件
+
+### 1. 后端部署包 (backend.zip)
+**位置**: `C:\Users\Z\Desktop\local\location-tracker\backend.zip`
+
+**包含内容**:
+- server.js - 主服务器文件
+- routes/location.js - API路由
+- services/locationService.js - 业务逻辑
+- database/ - 数据库配置和初始化脚本
+- config.env - 环境配置文件 (需重命名为 .env)
+- package.json - 依赖配置
+- ecosystem.config.js - PM2配置
+
+**部署位置**: `/root/backend/`
+
+### 2. 前端部署包 (frontend-dist.zip)
+**位置**: 需要你创建
+
+**创建方法**:
+1. 打开命令行: `cd C:\Users\Z\Desktop\local\location-tracker\frontend`
+2. 运行: `npm run build`
+3. 压缩 `dist` 文件夹为 `frontend-dist.zip`
+
+**包含内容**:
+- index.html - 主页面
+- assets/ - 编译后的JS/CSS
+- 所有静态资源
+
+**部署位置**: `/www/wwwroot/location.ulbooks.cn/`
+
+### 3. Android APK
+**构建方法**:
+1. 用Android Studio打开 `location-tracker/android/`
+2. Build → Build Bundle(s)/APK(s) → Build APK(s)
+3. APK位置: `android/app/build/outputs/apk/debug/app-debug.apk`
+
+## 🚀 服务器部署步骤
+
+### 第一步: 上传文件
+```bash
+# 上传到服务器 (用宝塔面板的文件管理器或SCP)
+# 后端: backend.zip → /root/
+# 前端: frontend-dist.zip → /www/wwwroot/location.ulbooks.cn/
+```
+
+### 第二步: 解压和配置
+```bash
+# 后端部署
+cd /root
+unzip backend.zip
+cd backend
+mv config.env .env  # 重命名环境文件
+npm install
+npm start
+
+# 前端部署
+cd /www/wwwroot/location.ulbooks.cn
+unzip frontend-dist.zip
+```
+
+### 第三步: 配置Nginx (如果需要)
+```nginx
+server {
+    listen 80;
+    server_name location.ulbooks.cn;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name location.ulbooks.cn;
+
+    # SSL证书配置
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+
+    # API代理到后端
+    location /api/ {
+        proxy_pass http://localhost:3001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # 前端静态文件
+    location / {
+        root /www/wwwroot/location.ulbooks.cn;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+
+## ✅ 验证部署
+
+### 1. 后端检查
+```bash
+curl http://localhost:3001/health
+# 应该返回: {"status":"ok","version":"1.0.0"}
+```
+
+### 2. 前端检查
+```bash
+curl https://location.ulbooks.cn
+# 应该返回HTML页面
+```
+
+### 3. API检查
+```bash
+curl -H "Authorization: Bearer 733385e53ac29e11b3f1a9f5fe59e0485af2e47fbd0411ba7c815cfee9864bea" \
+     https://location.ulbooks.cn/api/v1/location/latest
+```
+
+## 📱 Android测试
+
+1. 安装APK到手机
+2. 同意隐私协议
+3. 开启位置上报
+4. 观察日志确认上报成功
+
+---
+
+**所有文件准备好后，告诉我你上传完成了，我们开始最终测试！** 🎉

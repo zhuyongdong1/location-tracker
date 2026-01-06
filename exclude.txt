@@ -1,0 +1,11 @@
+node_modules
+.git
+.DS_Store
+*.log
+logs\
+*.tmp
+.vscode\
+.idea\
+build\
+dist\
+*.zip

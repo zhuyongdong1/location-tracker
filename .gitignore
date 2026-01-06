@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+*/node_modules/
+.pnpm-debug.log*
+
+# Build outputs
+dist/
+build/
+*.apk
+*.aab
+
+# Environment files
+.env
+.env.local
+.env.production
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+cache/
+
+# Logs
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Archives
+*.zip
+*.tar.gz
+*.7z

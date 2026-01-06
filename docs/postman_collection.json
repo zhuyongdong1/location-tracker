@@ -1,0 +1,152 @@
+{
+  "info": {
+    "name": "位置追踪API测试集合",
+    "description": "用于测试位置追踪系统的API接口",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://yourdomain.com",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "YOUR_BEARER_TOKEN_HERE",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "位置数据上报",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"device_id\": \"test_device_001\",\n  \"ts_client\": {{timestamp}},\n  \"lat\": 39.90420000,\n  \"lng\": 116.40740000,\n  \"accuracy_m\": 15.50,\n  \"provider\": \"gps\",\n  \"battery_pct\": 85,\n  \"remark\": \"测试数据\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/location/push",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "location", "push"]
+        }
+      }
+    },
+    {
+      "name": "获取最新位置",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/location/latest?device_id=test_device_001",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "location", "latest"],
+          "query": [
+            {
+              "key": "device_id",
+              "value": "test_device_001"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "获取历史轨迹",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/v1/location/list?from={{from_timestamp}}&to={{to_timestamp}}&limit=100",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "location", "list"],
+          "query": [
+            {
+              "key": "from",
+              "value": "{{from_timestamp}}"
+            },
+            {
+              "key": "to",
+              "value": "{{to_timestamp}}"
+            },
+            {
+              "key": "limit",
+              "value": "100"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "删除位置数据",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"from\": {{from_timestamp}},\n  \"to\": {{to_timestamp}},\n  \"device_id\": \"test_device_001\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/v1/location/push",
+          "host": ["{{base_url}}"],
+          "path": ["api", "v1", "location", "delete"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://yourdomain.com",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "YOUR_BEARER_TOKEN_HERE",
+      "type": "string"
+    },
+    {
+      "key": "timestamp",
+      "value": "{{$timestamp}}",
+      "type": "string"
+    },
+    {
+      "key": "from_timestamp",
+      "value": "{{$timestamp}} - 86400000",
+      "type": "string"
+    },
+    {
+      "key": "to_timestamp",
+      "value": "{{$timestamp}}",
+      "type": "string"
+    }
+  ]
+}
